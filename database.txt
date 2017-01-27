@@ -10,7 +10,8 @@ CREATE TABLE pets (
     name varchar(100),
     breed varchar(100),
     color varchar(100),
-    owner_id integer REFERENCES owners
+    owner_id integer REFERENCES owners,
+    display_flag integer
 );
 
 
@@ -19,5 +20,6 @@ CREATE TABLE visits(
     id SERIAL PRIMARY KEY,
     check_in date,
     check_out date,
-    pet_id integer REFERENCES pets
+    pet_id integer REFERENCES pets,
+    checking_flag integer
 );
