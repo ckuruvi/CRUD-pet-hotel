@@ -29,6 +29,57 @@ router.post('/',function(req,res){
       });
     }
   });
-});//end of p
+});//end of post
 
+
+router.get('/',function(req,res){
+  pool.connect(function(err,client,done){
+    if(err){
+      console.log('error connecting to DB',err);
+      res.sendStatus(500);
+      done();
+    } else {
+     client.query(
+       //'select o.id uid,first_name,last_name,p.id pid,name,breed,color,check_in_flag from owners o join pets p on o.id=p.owner_id join visits v on p.id=v.pet_id;'
+       'select o.id uid,first_name,last_name,p.id pid,name,breed,color from owners o join pets p on o.id=p.owner_id;'
+      ,
+      function(err,result){
+        done();
+        if(err){
+          console.log('error querying db',err);
+          res.sendStatus(500);
+        } else {
+          console.log('posted info from db',result.rows);
+          res.send(result.rows);
+        }
+      });
+    }
+  });
+});//end of get
+
+
+
+router.get('/list',function(req,res){
+  pool.connect(function(err,client,done){
+    if(err){
+      console.log('error connecting to DB',err);
+      res.sendStatus(500);
+      done();
+    } else {
+     client.query(
+       'select id,first_name,last_name from owners;'
+      ,
+      function(err,result){
+        done();
+        if(err){
+          console.log('error querying db',err);
+          res.sendStatus(500);
+        } else {
+          console.log('posted info from db',result.rows);
+          res.send(result.rows);
+        }
+      });
+    }
+  });
+});//end of get
 module.exports = router;
