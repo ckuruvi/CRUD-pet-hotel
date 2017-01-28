@@ -41,7 +41,10 @@ router.get('/',function(req,res){
     } else {
      client.query(
        //'select o.id uid,first_name,last_name,p.id pid,name,breed,color,check_in_flag from owners o join pets p on o.id=p.owner_id join visits v on p.id=v.pet_id;'
-       'select o.id uid,first_name,last_name,p.id pid,name,breed,color from owners o join pets p on o.id=p.owner_id;'
+       'select o.id oid,first_name,last_name,p.id pid,name,breed,color, checking_flag, v.id vid from owners o join pets p on '+
+        'o.id=p.owner_id left join visits v on p.id=v.pet_id WHERE p.display_flag = 1 '+
+       'AND (v.checking_flag IS NULL OR v.checking_flag = 1);'
+
       ,
       function(err,result){
         done();
